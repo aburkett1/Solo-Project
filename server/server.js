@@ -16,38 +16,11 @@ app.get('/', (req, res) => {
     res.status(200).sendFile(path.resolve(__dirname, '../client/index.html'));
 })
 
+// Route to lists
 app.use('/lists', routerList);
 
-
-// // Get All Lists
-// app.get('/lists', listController.getAllLists, (req, res) => {
-//     res.status(200).json(res.locals.lists);
-// })
-
-// // Get Specific List
-// app.get('/lists/:id', listController.getOneList, (req, res) => {
-//     res.status(200).json(res.locals.lists);
-// })
-
-// // Create List
-// app.post('/lists', listController.createList, (req, res) => {
-//     res.status(200).json(res.locals.lists);
-// })
-
-// // Update List Name
-// app.put('/lists/name', listController.updateListName, (req, res) => {
-//     res.status(200).json(res.locals.lists);
-// })
-
-// // Update List Order
-// app.put('/lists/order', listController.updateListOrder, (req, res) => {
-//     res.status(200).json(res.locals.lists);
-// })
-
-// // Delete List
-// app.delete('/lists/:id', listController.deleteList, (req, res) => {
-//     res.status(200).json(res.locals.lists);
-// })
+// Route to items
+app.use('/items', routerItems);
 
 // 404 handler
 app.use('*', (req, res) => {

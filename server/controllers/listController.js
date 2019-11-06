@@ -47,7 +47,6 @@ listController.getOneList = (req, res, next) => {
 };
 
 listController.createList = (req, res, next) => {
-    console.log(req.body);
     const { name, placement } = req.body;
 
     if (!name) {
