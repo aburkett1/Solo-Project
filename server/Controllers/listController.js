@@ -1,4 +1,4 @@
-const db = require('../../database/models/listModel');
+const db = require('../../database/models/pgModel');
 
 const listController = {};
 
