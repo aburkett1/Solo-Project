@@ -1,0 +1,85 @@
+$primary-main: rgb(90, 0, 143);
+$secondary-main: #c89bf9;
+$primary-offcolor: ghostwhite;
+
+body {
+    margin: 0;
+}
+
+#HeaderContainer {
+    background-color: $primary-main;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+#HeaderContainer h4 {
+    flex-grow: 1;
+    color: $primary-offcolor;
+    margin-left: 10px;
+}
+
+#HeaderContainer button {
+    width: 40px;
+    height: 40px;
+    border-radius: 50px;
+    border-color: $primary-offcolor;
+    background-color: $primary-offcolor;
+    border-width: 0;
+    color: $primary-main;
+    font: icon;
+    font-size: 30px;
+    margin-right: 10px;
+}
+
+#ListsContainer {
+    background-color: $secondary-main;
+    display: flex;
+    flex-direction: column;
+}
+
+#List {
+    display: flex;
+    flex-direction: row;
+    height: 50px;
+}
+
+.list {
+    flex-grow: 1;
+    background-color: $secondary-main;
+    font-size: 25px;
+}
+.edit {
+    width: 50px;
+    background-color: $secondary-main;
+    background-image: url(https://image.flaticon.com/icons/svg/84/84380.svg);
+    background-repeat-x: no-repeat;
+    background-repeat-y: no-repeat;
+    background-position-x: center;
+    background-position-y: center;
+}
+
+.delete {
+    width: 50px;
+    background-color: $secondary-main;
+    background-image: url(https://image.flaticon.com/icons/png/512/61/61848.png);
+    background-repeat-x: no-repeat;
+    background-repeat-y: no-repeat;
+    background-position-x: center;
+    background-position-y: center;
+    background-size: contain;
+}
+
+#ItemsContainer {
+    background-color: $secondary-main;
+    display: flex;
+    flex-direction: column;
+}
+
+#EditListModal {
+    position: fixed;
+    top: 50%;
+    left: 45%;
+    width: 500px;
+    display: flex;
+}

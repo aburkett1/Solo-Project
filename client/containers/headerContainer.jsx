@@ -4,14 +4,14 @@ const HeaderContainer = (props) => {
     if (props.appState === 'listsView') {
         return (
             <div id="HeaderContainer" className="listsView">
-                <h4>{props.userName}</h4>
+                <h4>Hello, {props.userName}</h4>
                 <button onClick={() => props.click('addList')}>+</button>
             </div>
         )
     } else if (props.appState === 'addListView') {
         return (
             <div id="HeaderContainer" className="addListView">
-                <h4>{props.userName}</h4>
+                <h4>Hello, {props.userName}</h4>
             </div>
         )
     } else if (props.appState === 'itemsView') {
@@ -31,7 +31,7 @@ const HeaderContainer = (props) => {
     } else if (props.appState === 'editListView') {
         return (
             <div id="HeaderContainer" className="listsView">
-                <h4>{props.userName}</h4>
+                <h4>Hello, {props.userName}</h4>
                 <button onClick={() => props.click('addList')}>+</button>
             </div>
         )
