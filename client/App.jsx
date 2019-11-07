@@ -1,53 +1,91 @@
 import React, { Component } from 'react';
-import { render } from 'react-dom';
 
 // ***** Containers / Components ***** //
-import HeaderContainer from './containers/headerContainer';
-import ListsContainer from './containers/listsContainter';
-import AddList from './components/addList';
-import SearchLists from './components/searchLists';
-import NewItemContainer from './containers/newItemContainer';
-import ItemsContainer from './containers/itemsContainer';
+import HeaderContainer from './containers/headerContainer.jsx';
+import ListsContainer from './containers/listsContainter.jsx';
+import NewListContainer from './containers/newListContainer.jsx';
+import SearchLists from './components/searchLists.jsx';
+import NewItemContainer from './containers/newItemContainer.jsx';
+import ItemsContainer from './containers/itemsContainer.jsx';
 
 class App extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            appState = 'listsView',
-            lists = [],
-            items = [],
-            currListName = '',
-            newListName = '',
-            newItemData = '',
-            userName = 'Austin',
+            appState: 'listsView',
+            lists: [],
+            items: [],
+            currListName: '',
+            newList: {
+                name: '',
+                placement: 1,
+            },
+            newItem: {
+                data: '',
+                placement: 1,
+            },
+            userName: 'Austin',
         }
         this.setListName = this.setListName.bind(this);
         this.setItemData = this.setItemData.bind(this);
         this.click = this.click.bind(this);
     }
 
-    componentWillMount() {
-
-    }
-
     // ***** onChange for List Name ***** //
     setListName(listName) {
-        this.setState({ newListName: listName });
+        const list = {...this.state.newList};
+        list.name = listName;
+        this.setState({ newList: list });
     }
 
     // ***** onChange for Item Data ***** //
     setItemData(itemData) {
-        this.setState({ newItemData: itemData })
+        const item = {...this.state.newItem};
+        item.data = itemData;
+        this.setState({ newItem: item });
     }
 
     // ***** onClicks ***** //
     click(button) {
+        // ***** Add List Button ***** //
         if (button === 'addList') {
+            return this.setState({ appState: 'addListView' });
 
+        // ***** Submit List Button ***** //
+        } else if (button === 'sumbitList') {
+            fetch('/lists', {
+                method: 'POST',
+                body: JSON.stringify(this.state.newList),
+            })
+            .then(() => {
+                const list = {...this.state.newList};
+                list.placement += 1;
+                return this.setState({
+                    appState: 'listsView',
+                    newList: list,
+                });
+            })
+            .catch(err => console.log(err));
+        
+        // ***** Back Button ***** //
         } else if (button === 'backButton') {
+            return this.setState({ appState: 'listsView' });
 
+        // ***** Submit Item Button ***** //
         } else if (button === 'addItem') {
-
+            fetch('/lists', {
+                method: 'POST',
+                body: JSON.stringify(this.state.newList),
+            })
+            .then(() => {
+                const list = {...this.state.newList};
+                list.placement += 1;
+                return this.setState({
+                    appState: 'listsView',
+                    newList: list,
+                });
+            })
+            .catch(err => console.log(err));
         }
     }
 
@@ -58,6 +96,7 @@ class App extends Component {
                     <HeaderContainer
                         appState={this.state.appState}
                         userName={this.state.userName}
+                        click={this.click}
                     />
                     <ListsContainer
                         lists={this.state.lists}
@@ -72,7 +111,7 @@ class App extends Component {
                         appState={this.state.appState}
                         userName={this.state.userName}
                     />
-                    <AddList
+                    <NewListContainer
                         setListName={this.setListName}
                         click={this.click}
                     />
@@ -101,4 +140,4 @@ class App extends Component {
     }
 }
 
-render(<App/>, document.getElementById('app'));
+export default App;

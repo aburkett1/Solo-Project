@@ -6,13 +6,7 @@
   "scripts": {
     "start": "nodemon -r dotenv/config server/server.js",
     "build": "NODE_ENV=production webpack",
-    "dev": "NODE_ENV=development webpack-dev-server --open & node server/server.js"
-  },
-  "nodemonConfig": {
-    "ignore": [
-      "build",
-      "client"
-    ]
+    "dev": "NODE_ENV=development webpack-dev-server --open & nodemon server/server.js"
   },
   "repository": {
     "type": "git",

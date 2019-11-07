@@ -1,16 +1,15 @@
 const path = require('path');
 
 module.exports = {
-    entry: './client/App.jsx',
+    entry: './client/index.js',
     output: {
         path: path.resolve(__dirname, 'build'),
         filename: 'bundle.js',
     },
     devServer: {
-        publicPath: '/build/',
+        publicPath: '/build',
         proxy: {
-            '/lists/**': 'http://localhost:3000',
-            '/items/**': 'http://localhost:3000',
+            '/': 'http://localhost:3000',
         },
     },
     mode: process.env.NODE_ENV,
