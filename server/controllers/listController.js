@@ -4,7 +4,8 @@ const listController = {};
 
 listController.getAllLists = (req, res, next) => {
     const text = `
-        SELECT * FROM lists;
+        SELECT * FROM lists
+        ORDER BY placement;
     `;
 
     db.query(text)

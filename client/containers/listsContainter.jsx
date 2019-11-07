@@ -1,12 +1,17 @@
 import React from 'react';
-import React, { Component } from 'react';
 
-import List from '../components/lists';
+import List from '../components/lists.jsx';
 
 const ListsContainer = (props) => {
-    const arr = props.lists
-    const lists = arr.map(list => <List list={list} />)
+    const arr = props.lists;
+    console.log('lists', arr)
+    const lists = arr.map(list => <List list={{list}} click={props.click} />);
+    console.log('mapped array', lists);
     return (
-        {lists}
+        <React.Fragment>
+            {lists}
+        </React.Fragment>
     )
 }
+
+export default ListsContainer;

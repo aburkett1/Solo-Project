@@ -13,8 +13,11 @@ app.use(express.urlencoded({ extended: true }));
 
 // Add Routers Here
 app.get('/', (req, res) => {
-    res.status(200).sendFile(path.resolve(__dirname, '../client/index.html'));
+    res.status(200).sendFile(path.resolve(__dirname, '../index.html'));
 })
+
+// Serve build
+app.use('/build', express.static(path.join(__dirname, '../build')));
 
 // Route to lists
 app.use('/lists', routerList);

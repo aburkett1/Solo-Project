@@ -25,16 +25,43 @@ class App extends Component {
                 placement: 1,
             },
             userName: 'Austin',
+            recall: false,
         }
         this.setListName = this.setListName.bind(this);
         this.setItemData = this.setItemData.bind(this);
         this.click = this.click.bind(this);
     }
 
+    componentDidMount() {
+        fetch('/lists')
+        .then(response => response.json())
+        .then(response => {
+            console.log('Lists fetch >> ', response);
+            return this.setState({ lists: response })
+        })
+        .catch(err => console.log(err))
+    }
+
+    componentDidUpdate() {
+        if (this.state.recall) {
+            fetch('/lists')
+            .then(response => response.json())
+            .then(response => {
+                console.log('Lists fetch >> ', response);
+                return this.setState({
+                    lists: response,
+                    recall: false,
+                })
+            })
+            .catch(err => console.log(err))
+        }
+    }
+
     // ***** onChange for List Name ***** //
     setListName(listName) {
         const list = {...this.state.newList};
         list.name = listName;
+        console.log('new name >> ', list.name);
         this.setState({ newList: list });
     }
 
@@ -46,15 +73,19 @@ class App extends Component {
     }
 
     // ***** onClicks ***** //
-    click(button) {
+    click(button, id, name) {
         // ***** Add List Button ***** //
         if (button === 'addList') {
             return this.setState({ appState: 'addListView' });
 
         // ***** Submit List Button ***** //
-        } else if (button === 'sumbitList') {
+        } else if (button === 'submitList') {
+            console.log('New List >> ', this.state.newList);
             fetch('/lists', {
                 method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
                 body: JSON.stringify(this.state.newList),
             })
             .then(() => {
@@ -63,6 +94,7 @@ class App extends Component {
                 return this.setState({
                     appState: 'listsView',
                     newList: list,
+                    recall: true,
                 });
             })
             .catch(err => console.log(err));
@@ -73,17 +105,18 @@ class App extends Component {
 
         // ***** Submit Item Button ***** //
         } else if (button === 'addItem') {
-            fetch('/lists', {
-                method: 'POST',
-                body: JSON.stringify(this.state.newList),
-            })
-            .then(() => {
-                const list = {...this.state.newList};
-                list.placement += 1;
+            
+
+        // ***** Open List Button ***** //
+        } else if (button === 'list') {
+            fetch(`/items/${id}`)
+            .then(response => response.json())
+            .then(response => {
                 return this.setState({
-                    appState: 'listsView',
-                    newList: list,
-                });
+                    items: response,
+                    appState: 'itemsView',
+                    currListName: name,
+                })
             })
             .catch(err => console.log(err));
         }
@@ -100,6 +133,7 @@ class App extends Component {
                     />
                     <ListsContainer
                         lists={this.state.lists}
+                        click={this.click}
                     />
                 </React.Fragment>
                 
@@ -117,6 +151,7 @@ class App extends Component {
                     />
                     <ListsContainer
                         lists={this.state.lists}
+                        click={this.click}
                     />
                 </React.Fragment>
             )
