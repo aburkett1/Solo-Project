@@ -5,7 +5,7 @@ const listController = {};
 listController.getAllLists = (req, res, next) => {
     const text = `
         SELECT * FROM lists
-        ORDER BY placement;
+        ORDER BY _id DESC;
     `;
 
     db.query(text)
@@ -137,18 +137,35 @@ listController.updateListOrder = (req, res, next) => {
         })
 };
 
-listController.deleteList = (req, res, next) => {
+listController.deleteList = async (req, res, next) => {
     const { id } = req.params;
 
     const text = `
-        DELETE FROM lists
-        WHERE _id=$1
+        DELETE FROM items
+        WHERE list_id=$1
         RETURNING *;
     `;
 
     const values = [ id ];
 
-    db.query(text, values)
+    await db.query(text, values)
+        .then(data => {
+            res.locals.lists = data.rows;
+        })
+        .catch(err => {
+            console.log('Error in movieController.deleteList: ', err);
+            return res.sendStatus(500);
+        })
+    
+    const text2 = `
+        DELETE FROM lists
+        WHERE _id=$1
+        RETURNING *;
+    `;
+
+    const values2 = [ id ];
+
+    db.query(text2, values2)
         .then(data => {
             res.locals.lists = data.rows;
             return next();

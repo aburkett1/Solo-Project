@@ -8,9 +8,9 @@ const ListsContainer = (props) => {
     const lists = arr.map(list => <List list={{list}} click={props.click} />);
     console.log('mapped array', lists);
     return (
-        <React.Fragment>
+        <div id="ListsContainer" >
             {lists}
-        </React.Fragment>
+        </div>
     )
 }
 

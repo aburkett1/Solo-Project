@@ -7,6 +7,8 @@ import NewListContainer from './containers/newListContainer.jsx';
 import SearchLists from './components/searchLists.jsx';
 import NewItemContainer from './containers/newItemContainer.jsx';
 import ItemsContainer from './containers/itemsContainer.jsx';
+import EditListModal from './components/editList.jsx';
+import EditItemModal from './components/editItem.jsx';
 
 class App extends Component {
     constructor(props) {
@@ -17,6 +19,10 @@ class App extends Component {
             items: [],
             currListName: '',
             currListId: null,
+            editListName: '',
+            editListId: null,
+            editItemData: '',
+            editItemId: null,
             newList: {
                 name: '',
                 placement: 1,
@@ -31,6 +37,8 @@ class App extends Component {
         }
         this.setListName = this.setListName.bind(this);
         this.setItemData = this.setItemData.bind(this);
+        this.newItemData = this.newItemData.bind(this);
+        this.newListName = this.newListName.bind(this);
         this.click = this.click.bind(this);
     }
 
@@ -82,6 +90,16 @@ class App extends Component {
         const item = {...this.state.newItem};
         item.data = itemData;
         this.setState({ newItem: item });
+    }
+
+    // ***** onChange for new Item Data ***** //
+    newItemData(itemData) {
+        this.setState({ editItemData: itemData })
+    }
+
+    // ***** onChange for new Item Data ***** //
+    newListName(listName) {
+        this.setState({ editListName: listName })
     }
 
     // ***** onClicks ***** //
@@ -186,10 +204,95 @@ class App extends Component {
                 })
             })
             .catch(err => console.log(err));
+
+        // ***** Back Out of Item Editing ***** //
+        } else if (button === 'backToItems') {
+            return this.setState({
+                appState: 'itemsView',
+            })
+
+        // ***** Submit New Item Data ***** //
+        } else if (button === 'submitNewData') {
+            console.log('new item id >> ', this.state.editItemId, ', new item data >> ', this.state.editItemData)
+            fetch('/items/data', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    id: this.state.editItemId,
+                    data: this.state.editItemData,
+                })
+            })
+            .then(() => {
+                return this.setState({
+                    appState: 'itemsView',
+                    recallItems: true,
+                })
+            })
+            .catch(err => console.log(err));
+
+        // ***** Open Edit Item Modal ***** //
+        }  else if (button === 'editItem') {
+            return this.setState({
+                editItemId: id,
+                editItemData: name,
+                appState: 'editItemView',
+            })
+
+        // ***** Delete List ***** //
+        } else if (button === 'deleteList') {
+            fetch(`/lists/${id}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            })
+            .then(() => {
+                return this.setState({
+                    recallLists: true,
+                })
+            })
+            .catch(err => console.log(err));
+
+        // ***** Back Out of List Editing ***** //
+        } else if (button === 'backToLists') {
+            return this.setState({
+                appState: 'listsView',
+            })
+
+        // ***** Submit New List Name ***** //
+        } else if (button === 'submitNewName') {
+            fetch('/lists/name', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    id: this.state.editListId,
+                    name: this.state.editListName,
+                })
+            })
+            .then(() => {
+                return this.setState({
+                    appState: 'listsView',
+                    recallLists: true,
+                })
+            })
+            .catch(err => console.log(err));
+
+        // ***** Open Edit List Module ***** //
+        } else if (button === 'editList') {
+            return this.setState({
+                editListId: id,
+                editListName: name,
+                appState: 'editListView',
+            })
         }
     }
 
     render() {
+        console.log(this.state.appState);
         if (this.state.appState === 'listsView') {
             return (
                 <React.Fragment>
@@ -237,6 +340,48 @@ class App extends Component {
                     <ItemsContainer
                         items={this.state.items}
                         click={this.click}
+                    />
+                </React.Fragment>
+            )
+        } else if (this.state.appState === 'editListView') {
+            return (
+                <React.Fragment>
+                    <HeaderContainer
+                        appState={this.state.appState}
+                        userName={this.state.userName}
+                        click={this.click}
+                    />
+                    <ListsContainer
+                        lists={this.state.lists}
+                        click={this.click}
+                    />
+                    <EditListModal
+                        editListName={this.state.editListName}
+                        click={this.click}
+                        newListName={this.newListName}
+                    />
+                </React.Fragment>
+            )
+        } else if (this.state.appState === 'editItemView') {
+            return (
+                <React.Fragment>
+                    <HeaderContainer
+                        appState={this.state.appState}
+                        currListName={this.state.currListName}
+                        click={this.click}
+                    />
+                    <NewItemContainer
+                        setItemData={this.setItemData}
+                        click={this.click}
+                    />
+                    <ItemsContainer
+                        items={this.state.items}
+                        click={this.click}
+                    />
+                    <EditItemModal 
+                        editItemData={this.state.editItemData}
+                        click={this.click}
+                        newItemData={this.newItemData}
                     />
                 </React.Fragment>
             )

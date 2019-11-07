@@ -12,7 +12,7 @@ module.exports = {
             '/': 'http://localhost:3000',
         },
     },
-    mode: process.env.NODE_ENV,
+    mode: 'development',
     module: {
         rules: [
             {

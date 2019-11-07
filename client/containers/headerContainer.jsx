@@ -21,6 +21,20 @@ const HeaderContainer = (props) => {
                 <h4>{props.currListName}</h4>
             </div>
         )
+    } else if (props.appState === 'editItemView') {
+        return (
+            <div id="HeaderContainer" className="itemsView">
+                <button onClick={() => props.click('backButton')}>back</button>
+                <h4>{props.currListName}</h4>
+            </div>
+        )
+    } else if (props.appState === 'editListView') {
+        return (
+            <div id="HeaderContainer" className="listsView">
+                <h4>{props.userName}</h4>
+                <button onClick={() => props.click('addList')}>+</button>
+            </div>
+        )
     }
 };
 
