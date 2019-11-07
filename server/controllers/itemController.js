@@ -129,8 +129,8 @@ itemController.updateItemStatus = (req, res, next) => {
     if (!id) {
         console.log('No id given');
         return res.sendStatus(500);
-    } else if (!completed) {
-        console.log('No placement given')
+    } else if (completed === undefined) {
+        console.log('No status given')
         return res.sendStatus(500);
     }
 

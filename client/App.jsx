@@ -16,6 +16,7 @@ class App extends Component {
             lists: [],
             items: [],
             currListName: '',
+            currListId: null,
             newList: {
                 name: '',
                 placement: 1,
@@ -25,7 +26,8 @@ class App extends Component {
                 placement: 1,
             },
             userName: 'Austin',
-            recall: false,
+            recallLists: false,
+            recallItems: false,
         }
         this.setListName = this.setListName.bind(this);
         this.setItemData = this.setItemData.bind(this);
@@ -43,14 +45,24 @@ class App extends Component {
     }
 
     componentDidUpdate() {
-        if (this.state.recall) {
+        if (this.state.recallLists) {
             fetch('/lists')
             .then(response => response.json())
             .then(response => {
                 console.log('Lists fetch >> ', response);
                 return this.setState({
                     lists: response,
-                    recall: false,
+                    recallLists: false,
+                })
+            })
+            .catch(err => console.log(err))
+        } else if (this.state.recallItems) {
+            fetch(`/items/${this.state.currListId}`)
+            .then(response => response.json())
+            .then(response => {
+                return this.setState({
+                    items: response,
+                    recallItems: false,
                 })
             })
             .catch(err => console.log(err))
@@ -73,7 +85,7 @@ class App extends Component {
     }
 
     // ***** onClicks ***** //
-    click(button, id, name) {
+    click(button, id, name, status) {
         // ***** Add List Button ***** //
         if (button === 'addList') {
             return this.setState({ appState: 'addListView' });
@@ -94,7 +106,7 @@ class App extends Component {
                 return this.setState({
                     appState: 'listsView',
                     newList: list,
-                    recall: true,
+                    recallLists: true,
                 });
             })
             .catch(err => console.log(err));
@@ -104,8 +116,27 @@ class App extends Component {
             return this.setState({ appState: 'listsView' });
 
         // ***** Submit Item Button ***** //
-        } else if (button === 'addItem') {
-            
+        } else if (button === 'submitItem') {
+            fetch('/items', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    ...this.state.newItem,
+                    list_id: this.state.currListId,
+                }),
+            })
+            .then(() => {
+                const item = {...this.state.newItem};
+                item.placement += 1;
+                return this.setState({
+                    appState: 'itemsView',
+                    newItem: item,
+                    recallItems: true,
+                });
+            })
+            .catch(err => console.log(err));
 
         // ***** Open List Button ***** //
         } else if (button === 'list') {
@@ -116,6 +147,42 @@ class App extends Component {
                     items: response,
                     appState: 'itemsView',
                     currListName: name,
+                    currListId: id,
+                })
+            })
+            .catch(err => console.log(err));
+
+        // ***** CheckBox ***** //
+        } else if (button === 'checkBox') {
+            let completed = status ? false : true;
+            fetch('/items/status', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    id: id,
+                    completed: completed,
+                })
+            })
+            .then(() => {
+                return this.setState({
+                    recallItems: true,
+                })
+            })
+            .catch(err => console.log(err));
+
+        // ***** Delete Button ***** //
+        } else if (button === 'deleteItem') {
+            fetch(`/items/${id}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            })
+            .then(() => {
+                return this.setState({
+                    recallItems: true,
                 })
             })
             .catch(err => console.log(err));
@@ -161,6 +228,7 @@ class App extends Component {
                     <HeaderContainer
                         appState={this.state.appState}
                         currListName={this.state.currListName}
+                        click={this.click}
                     />
                     <NewItemContainer
                         setItemData={this.setItemData}
@@ -168,6 +236,7 @@ class App extends Component {
                     />
                     <ItemsContainer
                         items={this.state.items}
+                        click={this.click}
                     />
                 </React.Fragment>
             )

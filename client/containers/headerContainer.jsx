@@ -17,7 +17,7 @@ const HeaderContainer = (props) => {
     } else if (props.appState === 'itemsView') {
         return (
             <div id="HeaderContainer" className="itemsView">
-                <button onClick={() => props.click('addList')}>back</button>
+                <button onClick={() => props.click('backButton')}>back</button>
                 <h4>{props.currListName}</h4>
             </div>
         )
