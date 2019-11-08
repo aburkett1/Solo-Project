@@ -9,6 +9,7 @@ import NewItemContainer from './containers/newItemContainer.jsx';
 import ItemsContainer from './containers/itemsContainer.jsx';
 import EditListModal from './components/editList.jsx';
 import EditItemModal from './components/editItem.jsx';
+import Particles from 'react-particles-js';
 
 class App extends Component {
     constructor(props) {
@@ -305,6 +306,18 @@ class App extends Component {
                         lists={this.state.lists}
                         click={this.click}
                     />
+                    <Particles
+                        className='modal-bg'
+                        params={{
+                            "particles": {
+                                "number": {
+                                    "value": 100
+                                },
+                                "size": {
+                                    "value": 2
+                                }
+                            }
+                        }} />
                 </React.Fragment>
                 
             )
@@ -323,6 +336,18 @@ class App extends Component {
                         lists={this.state.lists}
                         click={this.click}
                     />
+                    <Particles
+                        className='modal-bg'
+                        params={{
+                            "particles": {
+                                "number": {
+                                    "value": 100
+                                },
+                                "size": {
+                                    "value": 2
+                                }
+                            }
+                        }} />
                 </React.Fragment>
             )
         } else if (this.state.appState === 'itemsView') {
@@ -341,6 +366,18 @@ class App extends Component {
                         items={this.state.items}
                         click={this.click}
                     />
+                    <Particles
+                        className='modal-bg'
+                        params={{
+                            "particles": {
+                                "number": {
+                                    "value": 100
+                                },
+                                "size": {
+                                    "value": 2
+                                }
+                            }
+                        }} />
                 </React.Fragment>
             )
         } else if (this.state.appState === 'editListView') {
@@ -360,6 +397,18 @@ class App extends Component {
                         click={this.click}
                         newListName={this.newListName}
                     />
+                    <Particles
+                        className='modal-bg'
+                        params={{
+                            "particles": {
+                                "number": {
+                                    "value": 100
+                                },
+                                "size": {
+                                    "value": 2
+                                }
+                            }
+                        }} />
                 </React.Fragment>
             )
         } else if (this.state.appState === 'editItemView') {
@@ -383,6 +432,18 @@ class App extends Component {
                         click={this.click}
                         newItemData={this.newItemData}
                     />
+                    <Particles
+                        className='modal-bg'
+                        params={{
+                            "particles": {
+                                "number": {
+                                    "value": 100
+                                },
+                                "size": {
+                                    "value": 2
+                                }
+                            }
+                        }} />
                 </React.Fragment>
             )
         }
