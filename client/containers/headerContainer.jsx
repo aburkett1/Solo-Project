@@ -17,14 +17,14 @@ const HeaderContainer = (props) => {
     } else if (props.appState === 'itemsView') {
         return (
             <div id="HeaderContainer" className="itemsView">
-                <button onClick={() => props.click('backButton')}>back</button>
+                <button className="backButton" onClick={() => props.click('backButton')}></button>
                 <h4>{props.currListName}</h4>
             </div>
         )
     } else if (props.appState === 'editItemView') {
         return (
             <div id="HeaderContainer" className="itemsView">
-                <button onClick={() => props.click('backButton')}>back</button>
+                <button className="backButton" onClick={() => props.click('backButton')}></button>
                 <h4>{props.currListName}</h4>
             </div>
         )

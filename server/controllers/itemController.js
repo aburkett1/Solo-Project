@@ -8,7 +8,7 @@ itemController.getAllItems = (req, res, next) => {
     const text = `
         SELECT * FROM items
         WHERE list_id=$1
-        ORDER BY _id;
+        ORDER BY _id DESC;
     `;
 
     const values = [ list_id ]

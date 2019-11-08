@@ -19,6 +19,9 @@ app.get('/', (req, res) => {
 // Serve build
 app.use('/build', express.static(path.join(__dirname, '../build')));
 
+// Serve build
+app.use('/assets/snake', express.static(path.join(__dirname, '../client/assets/snake.png')));
+
 // Route to lists
 app.use('/lists', routerList);
 
